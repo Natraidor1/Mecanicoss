@@ -4,6 +4,7 @@
  */
 package Modelo;
 
+import Vista.frmMecanicos;
 import javax.swing.JTable;
 import java.sql.*;
 import javax.swing.table.DefaultTableModel;
@@ -129,7 +130,60 @@ public class Mecanicos {
         }
     }
     
-    
+           public void cargarDatosTabla(frmMecanicos vista) {
+        // Obtén la fila seleccionada 
+        int filaSeleccionada = vista.jtMecanicos.getSelectedRow();
+ 
+        // Debemos asegurarnos que haya una fila seleccionada antes de acceder a sus valores
+        if (filaSeleccionada != -1) {
+            String id = vista.jtMecanicos.getValueAt(filaSeleccionada, 0).toString();
+            String NombreMecanico = vista.jtMecanicos.getValueAt(filaSeleccionada, 1).toString();
+            String Edad = vista.jtMecanicos.getValueAt(filaSeleccionada, 2).toString();
+            String Peso = vista.jtMecanicos.getValueAt(filaSeleccionada, 3).toString();
+            String Correo = vista.jtMecanicos.getValueAt(filaSeleccionada, 4).toString();
+ 
+            // Establece los valores en los campos de texto
+            vista.txtNombre.setText(NombreMecanico);
+            vista.txtEdad.setText(Edad);
+            vista.txtPeso.setText(Peso);
+            vista.txtCorreoElectronico.setText(Correo);
+
+        }
+    }
+           
+        public void Actualizar(JTable tabla) {
+        //Creamos una variable igual a ejecutar el método de la clase de conexión
+        Connection conexion = ClaseConexion.getConexion();
+        //obtenemos que fila seleccionó el usuario
+        int filaSeleccionada = tabla.getSelectedRow();
+        if (filaSeleccionada != -1) {
+            //Obtenemos el id de la fila seleccionada
+            String id = tabla.getValueAt(filaSeleccionada, 0).toString();
+            try { 
+                //Ejecutamos la Query
+                PreparedStatement updateUser = conexion.prepareStatement("update tbMecanico set nombre_Mecanico = ?, edad_Mecanico = ?, peso_Mecanico = ?, correo_Mecanico = ? where id_Mecanico = ?");
+                updateUser.setString(1, getNombre_Mecanico());
+                updateUser.setInt(2, getEdad_Mecanico());
+                updateUser.setDouble(3, getPeso_Mecanico());
+                updateUser.setString(4, getCorreo_Mecanico());
+                updateUser.setString(5, id);
+                updateUser.executeUpdate();
+ 
+            } catch (Exception e) {
+                System.out.println("este es el error en el metodo de actualizar" + e);
+            }
+        } else {
+            System.out.println("no");
+        }
+    }
+        
+        
+    public void limpiar(frmMecanicos vista) {
+        vista.txtNombre.setText("");
+        vista.txtEdad.setText("");
+        vista.txtCorreoElectronico.setText("");
+        vista.txtPeso.setText("");
+    }
     
     
 }

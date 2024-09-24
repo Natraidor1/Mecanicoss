@@ -27,6 +27,8 @@ public class ctrlMecanicos implements MouseListener {
         modelo.Mostrar(vista.jtMecanicos);
         vista.btnEliminar1.addMouseListener(this);
         vista.btnGuardar1.addMouseListener(this);
+        vista.jtMecanicos.addMouseListener(this);
+        vista.btnActualizar.addMouseListener(this);
 
         
     
@@ -43,13 +45,30 @@ public class ctrlMecanicos implements MouseListener {
             
             Modelo.Guardar();
             Modelo.Mostrar(Vista.jtMecanicos);
+            Modelo.limpiar(Vista);
             
         }
         
         if(e.getSource() == Vista.btnEliminar1){
             Modelo.Eliminar(Vista.jtMecanicos);
             Modelo.Mostrar(Vista.jtMecanicos);
+            Modelo.limpiar(Vista);
             JOptionPane.showMessageDialog(Vista, "Registro eliminado exitosamente");
+        }
+        
+         if(e.getSource() == Vista.jtMecanicos){
+            Modelo.cargarDatosTabla(Vista);
+        }
+         
+          if(e.getSource() == Vista.btnActualizar){
+            Modelo.setNombre_Mecanico(Vista.txtNombre.getText());
+            Modelo.setEdad_Mecanico(Integer.parseInt(Vista.txtEdad.getText()));
+            Modelo.setPeso_Mecanico(Double.parseDouble(Vista.txtPeso.getText()));
+            Modelo.setCorreo_Mecanico(Vista.txtCorreoElectronico.getText());
+            
+            Modelo.Actualizar(Vista.jtMecanicos);
+            Modelo.Mostrar(Vista.jtMecanicos);
+            Modelo.limpiar(Vista);
         }
     }
 
